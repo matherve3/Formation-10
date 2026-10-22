@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Niveau 10 — Bancaire &amp; Conformité CI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#070b14;color:#e8eef7;line-height:1.7;font-size:15px;min-height:100vh}
+h2{color:#fbbf24;margin-bottom:12px;font-size:1.3rem}
+h3{color:#fcd34d;margin:14px 0 8px;font-size:1rem}
+h4{color:#fde68a;margin:10px 0 6px;font-size:.95rem}
+p{margin:8px 0;color:#cbd5e1}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin-bottom:5px;color:#cbd5e1}
+strong{color:#fbbf24}
+em{color:#fcd34d;font-style:normal;font-weight:600}
+code{background:#0a1220;padding:2px 6px;border-radius:4px;color:#fcd34d;font-size:.88em;font-family:monospace;border:1px solid #1e2a44}
+pre{background:#050914;padding:12px;border-radius:6px;overflow-x:auto;font-size:.82em;margin:10px 0;color:#fde68a;border:1px solid #1e2a44;white-space:pre}
+a{color:#00d4ff;text-decoration:none}
+button{background:#d97706;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;font-family:inherit;margin:3px}
+button:hover{background:#b45309}
+button.sec{background:#1a2540;color:#e8eef7;border:1px solid #2a3a5c}
+button.gold{background:#fbbf24;color:#1a1200}
+header{background:#111a2e;padding:14px 20px;border-bottom:2px solid #fbbf24;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10}
+.logo{color:#fcd34d;font-weight:800;cursor:pointer;font-size:.95rem}
+.hs{color:#94a3b8;font-size:.78rem;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hs .pill{background:#0f1729;padding:5px 10px;border-radius:16px;border:1px solid #1e2a44;font-weight:600}
+.hs .pill b{color:#fcd34d}
+.hs a{color:#ef4444;cursor:pointer;font-weight:700;padding:5px 10px}
+main{max-width:950px;margin:0 auto;padding:20px 16px 60px}
+.card{background:#111a2e;border-radius:12px;padding:20px;margin-bottom:14px;border:1px solid #1e2a44}
+.crumb{font-size:.82rem;color:#64748b;margin-bottom:14px;display:flex;gap:6px;flex-wrap:wrap}
+.crumb a{color:#00d4ff;cursor:pointer}
+.intro{background:#78350f;padding:14px;border-radius:8px;margin:12px 0;border-left:4px solid #fbbf24;font-style:italic;color:#fde68a}
+.cours{line-height:1.7}
+.cours h3{color:#fcd34d}
+.cours h4{color:#fde68a}
+.cours .box{padding:12px;border-radius:8px;margin:10px 0;border-left:3px solid #fbbf24;background:#3a2a0a;color:#f5e3a8}
+.cours .warn{padding:12px;border-radius:8px;margin:10px 0;border-left:3px solid #ef4444;background:#3a0f0f;color:#f4c4c4}
+.cours .good{padding:12px;border-radius:8px;margin:10px 0;border-left:3px solid #22c55e;background:#0a3a1a;color:#a7f3c4}
+.cours .bank{padding:12px;border-radius:8px;margin:10px 0;border-left:3px solid #22c55e;background:#0d3a1f;color:#b5e8c8}
+.cours table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.88em}
+.cours th{background:#0f1729;color:#fcd34d;padding:8px;text-align:left;border:1px solid #1e2a44}
+.cours td{border:1px solid #1e2a44;padding:8px;color:#cbd5e1}
+.quiz{background:#0a1220;padding:14px;border-radius:10px;margin-top:12px;border:1px solid #1e2a44}
+.q{margin-bottom:14px;padding:12px;background:#0f1729;border-radius:8px;border:1px solid #1e2a44}
+.q>p:first-child{font-weight:600;margin-bottom:10px;color:#e8eef7}
+.q label{display:block;padding:10px 12px;margin:5px 0;background:#111827;border-radius:7px;cursor:pointer;border:1.5px solid transparent;color:#cbd5e1;font-size:.9rem}
+.q label:hover{background:#1a2540}
+.q input{margin-right:10px}
+.ok{background:rgba(34,197,94,.2)!important;border-color:#22c55e!important;color:#a7f3c4!important}
+.ko{background:rgba(239,68,68,.2)!important;border-color:#ef4444!important;color:#fca5a5!important}
+.exp{background:#050914;padding:10px;border-radius:6px;margin-top:8px;font-size:.85em;color:#cbd5e1;border-left:3px solid #fbbf24;display:none}
+.res{margin-top:12px;padding:14px;border-radius:8px;font-weight:700;text-align:center}
+.res.g{background:rgba(34,197,94,.2);color:#a7f3c4;border:1px solid #22c55e}
+.res.r{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid #ef4444}
+.nav{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:12px}
+.btn{background:#0f1729;padding:14px;border-radius:10px;cursor:pointer;border:2px solid transparent;text-align:left;transition:all .15s}
+.btn:hover{border-color:#fbbf24}
+.btn.done{border-color:#22c55e;background:#0d3a1f}
+.btn .n{font-weight:800;color:#fcd34d;display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.5px}
+.btn.done .n{color:#86efac}
+.btn .ti{display:block;font-size:.88rem;color:#e8eef7;margin-top:5px;font-weight:600}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
+.stat{background:#111a2e;padding:16px;border-radius:12px;border:1px solid #1e2a44;text-align:center;border-top:3px solid #fbbf24}
+.stat .big{font-size:2em;font-weight:800;color:#fcd34d;display:block;line-height:1.1}
+.stat .lbl{font-size:.75em;color:#94a3b8;margin-top:6px;text-transform:uppercase;font-weight:600}
+.progress-bar{background:#0a1220;height:8px;border-radius:4px;overflow:hidden;margin:10px 0;border:1px solid #1e2a44}
+.progress-bar>div{height:100%;background:#fbbf24;transition:width .5s}
+.login-box{max-width:400px;margin:50px auto;background:#111a2e;padding:30px;border-radius:16px;border:1px solid #1e2a44}
+.login-box h2{text-align:center;margin-bottom:16px}
+.login-box input{width:100%;padding:12px;margin:8px 0;background:#0a1220;border:1.5px solid #1e2a44;border-radius:9px;color:#e8eef7;font-size:.95rem;font-family:inherit}
+.login-box input:focus{outline:none;border-color:#fbbf24}
+.login-box button{width:100%;margin-top:12px;padding:13px}
+.locked{text-align:center;padding:40px 20px;background:#0d1424;border-radius:14px;border:2px dashed #2a3a5c}
+.locked .icon{font-size:3.5em;margin-bottom:14px;opacity:.6}
+.locked h3{color:#fbbf24;font-size:1.2rem;margin:0 0 8px}
+.locked p{color:#94a3b8;font-size:.9rem}
+.locked .bar{width:180px;height:6px;background:#0a1220;border-radius:3px;margin:14px auto;overflow:hidden;border:1px solid #1e2a44}
+.locked .bar>div{height:100%;background:#fbbf24}
+.cert{background:#78350f;padding:36px 26px;border-radius:14px;border:3px double #fbbf24;text-align:center}
+.cert .seal{width:80px;height:80px;border-radius:50%;background:#fbbf24;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 16px;border:3px solid #fde68a}
+.cert .sub{color:#fcd34d;font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:800;margin-bottom:6px}
+.cert .title{font-family:Georgia,serif;font-size:1.5rem;font-weight:700;color:#fde68a;margin:6px 0 16px}
+.cert .name{font-family:Georgia,serif;font-size:1.9rem;font-weight:700;color:#fff;padding:14px 0;border-bottom:2px solid #fbbf24;border-top:2px solid #fbbf24;margin:10px auto 18px;max-width:380px}
+.cert .details{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:20px 0 16px;font-size:.82rem;color:#94a3b8}
+.cert .details div{text-align:center}
+.cert .details strong{color:#00d4ff;display:block;font-size:.95rem;margin-top:3px}
+.cert .id{font-family:monospace;font-size:.7rem;color:#64748b;padding:8px;background:rgba(0,0,0,.3);border-radius:5px;display:inline-block;margin-top:12px}
+.cert .sig{margin-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.cert .sig-block{text-align:center;flex:1;min-width:140px}
+.cert .sig-line{border-top:1px solid #94a3b8;padding-top:6px;font-size:.75rem;color:#94a3b8;margin-top:24px}
+.cert .sig-name{font-family:Georgia,serif;font-style:italic;color:#fcd34d;font-size:1.1rem}
+.cv-box{background:#fff;color:#1a1a1a;border-radius:12px;padding:30px;margin-top:14px;line-height:1.6}
+.cv-box h1{color:#92400e;font-size:1.6rem;margin-bottom:4px}
+.cv-box .role{color:#d97706;font-weight:600;margin-bottom:14px}
+.cv-box h2{color:#92400e;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;border-bottom:1.5px solid #cbd5e1;padding-bottom:4px;margin:16px 0 8px}
+.cv-box ul{padding-left:20px;margin:6px 0}
+.cv-box li{color:#334155;font-size:.9rem;margin-bottom:3px}
+.cv-box .badge{display:inline-block;padding:2px 8px;background:#fef3c7;color:#92400e;border-radius:10px;font-size:.75rem;font-weight:700;border:1px solid #fde68a;margin:2px}
+.tabs{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap}
+.tab{padding:8px 14px;background:#0f1729;border-radius:8px;cursor:pointer;font-size:.82em;font-weight:600;color:#94a3b8;border:1.5px solid transparent}
+.tab.active{background:#fbbf24;color:#1a1200}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-top:12px}
+.cert-item{background:#0f1729;padding:14px;border-radius:10px;border-left:4px solid #fbbf24}
+.cert-item.free{border-left-color:#22c55e}
+.cert-item.paid{border-left-color:#fbbf24}
+.cert-item h4{margin:0 0 5px;font-size:.9em;color:#e8eef7}
+.cert-item .org{font-size:.72em;color:#94a3b8;margin-bottom:8px}
+.cert-item .tag{display:inline-block;padding:2px 8px;border-radius:16px;font-size:.66em;font-weight:700;margin-right:3px;margin-bottom:3px}
+.cert-item .tag.free{background:rgba(34,197,94,.15);color:#86efac}
+.cert-item .tag.paid{background:rgba(251,191,36,.15);color:#fde68a}
+.cert-item .tag.lvl{background:rgba(59,130,246,.15);color:#93c5fd}
+.cert-item p{font-size:.78em;color:#cbd5e1;margin:6px 0}
+.cert-item a{display:inline-block;padding:5px 10px;background:#1a2540;color:#00d4ff;border-radius:6px;font-size:.74em;font-weight:700;border:1px solid #2a3a5c;margin-top:6px}
+.jobs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:12px}
+.job{background:#0f1729;padding:14px;border-radius:10px;border-left:4px solid #22c55e}
+.job h4{margin:0 0 4px;color:#86efac;font-size:.9em}
+.job .org{font-size:.75em;color:#94a3b8;margin-bottom:6px}
+.job p{font-size:.8em;color:#cbd5e1;margin:6px 0}
+.job a{display:inline-block;padding:5px 12px;background:#1a2540;color:#00d4ff;border-radius:6px;font-size:.76em;font-weight:700;margin-top:6px;border:1px solid #2a3a5c}
+.exam{background:#78350f;padding:16px;border-radius:12px;margin:10px 0;border-left:4px solid #fbbf24}
+.exam h4{color:#fde68a;margin:0 0 6px;font-size:.98rem}
+.exam.locked{opacity:.55;border-left-color:#475569}
+.exam.passed{background:#0d3a1f;border-left-color:#22c55e}
+.exam.passed h4{color:#86efac}
+.sync-box{background:#0a1220;padding:14px;border-radius:10px;margin:10px 0;border:1px solid #1e2a44}
+.sync-box textarea{width:100%;min-height:100px;background:#050914;color:#00d4ff;border:1px solid #1e2a44;border-radius:6px;padding:10px;font-family:monospace;font-size:.7em;resize:vertical;word-break:break-all}
+.sync-box label{display:block;margin:6px 0 4px;color:#94a3b8;font-size:.82em;font-weight:600}
+.today{list-style:none;padding:0;margin:10px 0}
+.today li{padding:10px 12px;background:#0f1729;border-radius:6px;margin-bottom:6px;border-left:3px solid #22c55e;font-size:.87em;color:#cbd5e1}
+footer{text-align:center;padding:24px 20px;color:#64748b;font-size:.8em;font-weight:600;border-top:1px solid #1e2a44;margin-top:32px}
+#ver{position:fixed;bottom:8px;right:8px;background:#78350f;color:#fcd34d;font-family:monospace;font-size:.7em;padding:4px 8px;border-radius:4px;border:1px solid #fbbf24;z-index:999}
+#err{position:fixed;bottom:8px;left:8px;background:#3a0f0f;color:#fca5a5;font-family:monospace;font-size:.68em;padding:4px 8px;border-radius:4px;border:1px solid #ef4444;display:none;max-width:80%;z-index:999}
+@media print{header,footer,.nav,#ver,#err,.tabs,button{display:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo" onclick="go('home')">🏦 Mon Drôle Parcours · Niveau 10</div>
+  <div class="hs" id="hs"></div>
+</header>
+<main id="app"></main>
+<footer>© H. N'GUESSAN ® — Niveau 10 · Bancaire &amp; Conformité CI</footer>
+<div id="ver">v10.0 chargé ✓</div>
+<div id="err"></div>
+
+<script>
+window.addEventListener('error', function(e) {
+  var el = document.getElementById('err');
+  if (el) { el.style.display = 'block'; el.textContent = 'ERREUR: ' + e.message; }
+});
+
+var KEY = 'mdpc_v100';
+var state = { currentUser: null, users: {} };
+try { var raw = localStorage.getItem(KEY); if (raw) state = JSON.parse(raw); } catch (e) {}
+
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} header(); }
+function user() { return state.currentUser ? state.users[state.currentUser] : null; }
+function mkUser(n) { return { name: n, done: {}, certs: [], examens: {}, jours: {}, created: new Date().toISOString().slice(0,10) }; }
+function today() { return new Date().toISOString().slice(0,10); }
+
+function countDone(lvl) {
+  var u = user(); if (!u) return 0;
+  var c = 0, p = lvl + '_';
+  for (var k in u.done) { if (k.indexOf(p) === 0 && u.done[k]) c++; }
+  return c;
+}
+function isComplete(lvl) { return countDone(lvl) >= 10; }
+function isUnlocked(lvl) { if (lvl === 1) return true; return isComplete(lvl - 1); }
+
+function simulate() {
+  var u = user(); if (!u) return;
+  for (var i = 1; i <= 10; i++) {
+    u.done['1_'+i]=true; u.done['2_'+i]=true; u.done['3_'+i]=true;
+    u.done['4_'+i]=true; u.done['5_'+i]=true; u.done['6_'+i]=true;
+    u.done['7_'+i]=true; u.done['8_'+i]=true; u.done['9_'+i]=true;
+  }
+  save();
+  alert('N1-N9 simulés. Niveau 10 débloqué !');
+  route();
+}
+
+function login() {
+  var el = document.getElementById('loginName'); if (!el) return;
+  var n = el.value.trim(); if (!n) { alert('Entre ton prénom'); return; }
+  var k = n.toLowerCase().replace(/\s+/g, '_');
+  if (!state.users[k]) state.users[k] = mkUser(n);
+  state.currentUser = k; save(); go('home');
+}
+function logout() { state.currentUser = null; save(); go('login'); }
+function go(h) { location.hash = h; }
+
+/* ============================================================
+   10 DÉFIS — Bancaire & Conformité CI
+   ============================================================ */
+var DEFIS = [
+{id:1, titre:"Le secteur bancaire ivoirien", intro:"Comprendre l écosystème bancaire ivoirien est la base de toute carrière cyber en banque. Acteurs, régulateurs, enjeux.",
+cours:"<h3>Le paysage bancaire ivoirien</h3><p>La Côte d Ivoire est le <strong>premier hub financier</strong> de l UEMOA (Union Économique et Monétaire Ouest-Africaine). Plus de 25 banques y opèrent.</p><h3>Banques principales</h3><table><tr><th>Banque</th><th>Type</th><th>Particularité</th></tr><tr><td>SGCI</td><td>Privée</td><td>Filiale Société Générale</td></tr><tr><td>BNI</td><td>Publique</td><td>Banque Nationale d Investissement</td></tr><tr><td>Ecobank CI</td><td>Privée</td><td>Groupe panafricain</td></tr><tr><td>SIB</td><td>Privée</td><td>Société Ivoirienne de Banque</td></tr><tr><td>NSIA Banque</td><td>Privée</td><td>Groupe NSIA</td></tr><tr><td>Orabank</td><td>Privée</td><td>Groupe Orabank</td></tr><tr><td>Coris Bank</td><td>Privée</td><td>Groupe burkinabè</td></tr><tr><td>BOA CI</td><td>Privée</td><td>Bank of Africa</td></tr><tr><td>Atlantic Business International</td><td>Privée</td><td>ABI</td></tr><tr><td>Banque Atlantique</td><td>Privée</td><td>Groupe ABI</td></tr></table><h3>Les régulateurs</h3><ul><li><strong>BCEAO</strong> — Banque Centrale des États de l Afrique de l Ouest (siège à Dakar)</li><li><strong>CB-UMOA</strong> — Commission Bancaire de l UMOA</li><li><strong>ARTCI</strong> — Autorité de Régulation des Télécoms et TIC</li><li><strong>PLCC</strong> — Plateforme de Lutte contre la Cybercriminalité</li><li><strong>CEPICI</strong> — Centre de Promotion des Investissements</li></ul><h3>Les acteurs IT</h3><ul><li><strong>GIM-UEMOA</strong> — interbancaire monétique</li><li><strong>SICA</strong> — Société Interbancaire de Compensation Automatisée</li><li><strong>SWIFT</strong> — réseau international</li><li><strong>Visa / Mastercard</strong> — réseaux cartes</li></ul><h3>Métiers IT en banque</h3><ul><li>DSI — Direction des Systèmes d Information</li><li>RSSI — Responsable Sécurité SI</li><li>SOC — Security Operations Center</li><li>Audit interne SI</li><li>Conformité / Risk Management</li></ul><div class=\"box\">Une banque = un coffre-fort qui brasse de l argent numérique. Chaque poste IT est un maillon critique.</div><div class=\"bank\">Le secteur bancaire CI embauche massivement en cyber (audit, SOC, conformité). C est un débouché direct après ce parcours.</div><div class=\"warn\">Une panne de la BCEAO peut bloquer tout le système bancaire national. Les cyberattaques visent souvent l infrastructure interbancaire.</div>",
+cas:"<h3>Cas 1 — Cartographier une banque</h3><p>Structurer la DSI d une banque type :</p><ul><li>Direction (CIO, RSSI)</li><li>Infrastructure (réseau, serveurs)</li><li>Applications (core banking, paiement)</li><li>Sécurité (SOC, IAM)</li><li>Support (helpdesk)</li><li>Projets</li></ul><h3>Cas 2 — Choisir une cible</h3><p>Étudiant L2 UVCI : viser un stage en SOC, audit interne, conformité, ou infrastructure.</p><p>Compétences demandées : réseaux, Linux, sécurité, réglementation.</p><h3>Cas 3 — Le rôle du RSSI</h3><ul><li>Définir la politique SSI</li><li>Veiller à la conformité (BCEAO, PCI-DSS)</li><li>Piloter les audits</li><li>Gérer les incidents</li><li>Sensibiliser les utilisateurs</li></ul>",
+quiz:[
+{q:'Régulateur bancaire ?',o:['BCEAO','Google','Microsoft','Amazon'],c:0,e:'BCEAO.'},
+{q:'RSSI = ?',o:['Responsable Sécurité SI','Routeur','Antivirus','Firewall'],c:0,e:'Sécurité SI.'}
+]},
+
+{id:2, titre:"Réglementation BCEAO et cybersécurité", intro:"La BCEAO impose des règles strictes aux banques. Ignorer ces règles = sanctions, retrait de licence.",
+cours:"<h3>Qui est la BCEAO</h3><p>La <strong>BCEAO</strong> est la banque centrale des 8 pays de l UEMOA (Bénin, Burkina, Côte d Ivoire, Guinée-Bissau, Mali, Niger, Sénégal, Togo). Elle régule les banques et impose des règles de sécurité.</p><h3>Textes majeurs</h3><ul><li><strong>Instruction 008-2018</strong> — établissements de paiement</li><li><strong>Directive 02-2016</strong> — monnaie électronique</li><li><strong>Instruction 006-2019</strong> — sécurité des SI</li><li><strong>Directive 01-2018</strong> — lutte anti-blanchiment</li><li><strong>Règlement 09-2010</strong> — systèmes de paiement</li></ul><h3>Exigences cybersécurité BCEAO</h3><ul><li><strong>Gouvernance</strong> — RSSI indépendant, comité sécurité</li><li><strong>Audit</strong> — annuel obligatoire, par prestataire agréé</li><li><strong>Chiffrement</strong> — données sensibles en transit et au repos</li><li><strong>Continuité</strong> — PCA testé annuellement</li><li><strong>Incidents</strong> — notification sous 72h</li><li><strong>Formation</strong> — sensibilisation annuelle</li><li><strong>Localisation</strong> — données critiques au sein de l UMOA (ou pays équivalent)</li></ul><h3>Sanctions possibles</h3><ul><li>Avertissement</li><li>Blâme</li><li>Amende (jusqu à % du capital)</li><li>Suspension d activité</li><li>Retrait d agrément</li></ul><h3>Autorités complémentaires</h3><ul><li><strong>GABAC</strong> — Groupe d Action contre le Blanchiment en Afrique Centrale</li><li><strong>GIABA</strong> — Groupe Intergouvernemental d Action contre le Blanchiment (Afrique de l Ouest)</li><li><strong>GAFI</strong> — Financial Action Task Force (international)</li></ul><div class=\"box\">La BCEAO est le « régulateur » du jeu bancaire. Sans son feu vert, aucune banque ne peut opérer.</div><div class=\"bank\">Toute cyberattaque majeure doit être notifiée à la BCEAO sous 72h. Un audit annuel est obligatoire.</div><div class=\"warn\">Une banque non conforme peut perdre sa licence. Le RSSI et le DG sont pénalement responsables.</div>",
+cas:"<h3>Cas 1 — Notification d incident</h3><p>Délai : 72h max. Contenu :</p><ol><li>Nature de l incident</li><li>Données/systèmes affectés</li><li>Impact estimé</li><li>Mesures prises</li><li>Plan de remédiation</li><li>Contact RSSI</li></ol><h3>Cas 2 — Audit annuel</h3><ul><li>Périmètre : SI critique, applications bancaires, réseau, IAM</li><li>Référentiels : BCEAO, ISO 27001, PCI-DSS</li><li>Prestataire : cabinet agréé</li><li>Livrables : rapport + plan d action</li><li>Suivi : comité trimestriel</li></ul><h3>Cas 3 — Localisation des données</h3><p>La BCEAO exige que les données critiques (transactions, soldes) restent dans l UMOA ou pays équivalent. Les clouds étrangers (AWS US) sont interdits pour ces données.</p>",
+quiz:[
+{q:'Délai notification incident ?',o:['72h','1 mois','1 an','Aucun'],c:0,e:'72h.'},
+{q:'Audit BCEAO ?',o:['Annuel','Jamais','5 ans','Mensuel'],c:0,e:'Annuel.'}
+]},
+
+{id:3, titre:"PCI-DSS — Sécurité des cartes bancaires", intro:"PCI-DSS est LE standard mondial pour la sécurité des données de carte. Toute banque ou commerçant qui accepte les cartes doit le respecter.",
+cours:"<h3>Qui est concerné</h3><p><strong>PCI-DSS</strong> (Payment Card Industry Data Security Standard) s applique à quiconque stocke, traite ou transmet des données de carte bancaire.</p><ul><li>Banques</li><li>Commerçants (boutiques, e-commerce)</li><li>Prestataires de paiement</li><li>Processeurs de transaction</li></ul><h3>Les 12 exigences</h3><ol><li>Pare-feu et routeur sécurisés</li><li>Pas de mots de passe par défaut</li><li>Protection des données stockées (chiffrement)</li><li>Chiffrement des transmissions</li><li>Antivirus et anti-malware</li><li>Systèmes et applications sécurisés</li><li>Restriction d accès aux données (besoin d en connaître)</li><li>Authentification unique par utilisateur</li><li>Restriction d accès physique</li><li>Traçabilité des accès (logs)</li><li>Tests de sécurité réguliers</li><li>Politique de sécurité documentée</li></ol><h3>Ce qu on ne doit JAMAIS stocker</h3><ul><li><strong>CVV/CVC</strong> (code au dos)</li><li><strong>PIN</strong> (code de la carte)</li><li><strong>Piste magnétique complète</strong></li></ul><h3>Ce qu on peut stocker</h3><ul><li>PAN (numéro de carte) — chiffré</li><li>Nom du porteur</li><li>Date d expiration</li><li>Service Code</li></ul><h3>Niveaux PCI</h3><table><tr><th>Niveau</th><th>Transactions/an</th></tr><tr><td>1</td><td>&gt; 6 millions</td></tr><tr><td>2</td><td>1-6 millions</td></tr><tr><td>3</td><td>20 000 - 1 million (e-commerce)</li><tr><td>4</td><td>&lt; 20 000</td></tr></table><h3>Audit</h3><ul><li>Niveau 1 : audit par QSA (Qualified Security Assessor)</li><li>Niveaux 2-4 : auto-évaluation (SAQ) + scan ASV</li></ul><div class=\"box\">PCI-DSS = le code de la route des paiements par carte. Sans respect = exclusion du système bancaire.</div><div class=\"bank\">Toutes les banques ivoiriennes traitant Visa/Mastercard sont PCI-DSS niveau 1 ou 2.</div><div class=\"warn\">Stocker un CVV = violation PCI critique. Amende possible de plusieurs millions de FCFA par mois de non-conformité.</div>",
+cas:"<h3>Cas 1 — Périmètre PCI</h3><p>Tout système qui touche des données de carte fait partie du CDE (Cardholder Data Environment) :</p><ul><li>Serveur web e-commerce</li><li>Base de données</li><li>Réseau entre eux</li><li>Postes des admins</li><li>Sauvegardes</li></ul><h3>Cas 2 — Audit SAQ</h3><p>Questionnaire d auto-évaluation. Questions clés :</p><ul><li>Chiffrement des PAN ? (AES-256)</li><li>CVV non stocké ?</li><li>TLS 1.2+ ?</li><li>Logs 1 an ?</li><li>Scan ASV trimestriel ?</li></ul><h3>Cas 3 — Tokenisation</h3><p>Remplacer le PAN par un token (ex : VISA-TOKEN-12345). Le token est inutilisable en dehors du système. Réduit le périmètre PCI.</p>",
+quiz:[
+{q:'Stocker CVV ?',o:['Autorisé','Interdit','Parfois','Recommandé'],c:1,e:'Interdit.'},
+{q:'Niveau PCI banque importante ?',o:['1','4','Aucun','Facultatif'],c:0,e:'Niveau 1.'}
+]},
+
+{id:4, titre:"Loi ivoirienne — Protection des données (Loi 2013-450)", intro:"La Côte d Ivoire s est dotée d une loi robuste sur la protection des données. Ignorer cette loi = sanctions + atteinte à la réputation.",
+cours:"<h3>Loi 2013-450</h3><p>Adoptée en 2013, la loi ivoirienne sur la protection des données personnelles est alignée sur le RGPD européen. Elle est appliquée par l <strong>ARTCI</strong>.</p><h3>Champ d application</h3><ul><li>Données personnelles (nom, adresse, email, téléphone)</li><li>Données sensibles (santé, religion, données bancaires, biométrie)</li><li>Données traitées manuellement ou par ordinateur</li><li>Quiconque traite des données en Côte d Ivoire</li></ul><h3>Obligations</h3><ul><li><strong>Déclaration préalable</strong> à l ARTCI</li><li><strong>Consentement</strong> de la personne concernée</li><li><strong>Finalité</strong> — usage défini et légitime</li><li><strong>Proportionnalité</strong> — collecter le minimum</li><li><strong>Durée limitée</strong> — conserver pas plus que nécessaire</li><li><strong>Sécurité</strong> — chiffrement, contrôle d accès</li><li><strong>Droits</strong> — accès, rectification, suppression, opposition</li><li><strong>Notification</strong> d une fuite à l ARTCI (72h)</li></ul><h3>Sanctions</h3><ul><li>Avertissement</li><li>Mise en demeure</li><li>Amende (jusqu à 5% du chiffre d affaires)</li><li>Retrait d autorisation</li><li>Emprisonnement possible (violation grave)</li></ul><h3>Rôles</h3><ul><li><strong>Responsable de traitement</strong> — décide du traitement (ex : la banque)</li><li><strong>Sous-traitant</strong> — traite pour le compte (ex : prestataire cloud)</li><li><strong>DPO</strong> (Data Protection Officer) — délégué à la protection</li><li><strong>ARTCI</strong> — autorité de contrôle</li></ul><h3>Cas bancaire</h3><ul><li>Ouverture de compte = collecte de données</li><li>KYC (Know Your Customer) = obligatoire</li><li>Conservation des données = 5 à 10 ans (obligation légale)</li><li>Fuite = notification ARTCI + BCEAO + clients</li></ul><div class=\"box\">La loi 2013-450 = la loi informatique et libertés ivoirienne. Elle protège les personnes, pas les entreprises.</div><div class=\"bank\">Une banque qui fuit les données clients doit notifier ARTCI + BCEAO + CNIL + clients. Amendes massives.</div><div class=\"warn\">Collecter plus de données que nécessaire = violation de la proportionnalité. Un DPO doit surveiller.</div>",
+cas:"<h3>Cas 1 — Registre de traitement</h3><p>Obligatoire pour chaque traitement :</p><ul><li>Nom du traitement (ex : ouverture de compte)</li><li>Finalité</li><li>Base légale</li><li>Données collectées</li><li>Durée de conservation</li><li>Destinataires</li><li>Mesures de sécurité</li></ul><h3>Cas 2 — Demande d accès</h3><p>Un client demande ses données. Délai légal : 1 mois. Contenu : toutes les données + finalité + destinataires. Refus possible dans certains cas (intérêt public, sécurité nationale).</p><h3>Cas 3 — Fuite de données</h3><ol><li>Détecter la fuite</li><li>Contenir (isoler systèmes)</li><li>Évaluer l ampleur (nombre de personnes affectées)</li><li>Notifier ARTCI sous 72h</li><li>Notifier les personnes concernées si risque élevé</li><li>Documenter</li></ol>",
+quiz:[
+{q:'Loi CI protection données ?',o:['Loi 2013-450','RGPD','CCPA','Aucune'],c:0,e:'2013-450.'},
+{q:'Autorité de contrôle CI ?',o:['ARTCI','BCEAO','CNIL','Google'],c:0,e:'ARTCI.'}
+]},
+
+{id:5, titre:"ISO 27001 et gouvernance SSI", intro:"ISO 27001 est LA norme internationale de management de la sécurité. Comprendre sa structure est essentiel.",
+cours:"<h3>Qu est-ce que ISO 27001</h3><p><strong>ISO/IEC 27001</strong> = norme internationale pour un Système de Management de la Sécurité de l Information (SMSI). Elle définit comment organiser la sécurité, pas comment la mettre en œuvre techniquement.</p><h3>Structure (PDCA)</h3><ul><li><strong>Plan</strong> — définir la politique, les risques</li><li><strong>Do</strong> — mettre en œuvre</li><li><strong>Check</strong> — auditer, mesurer</li><li><strong>Act</strong> — améliorer</li></ul><h3>Annexe A — 93 contrôles</h3><ul><li>A.5 — Politiques SSI</li><li>A.6 — Organisation</li><li>A.7 — Ressources humaines</li><li>A.8 — Gestion des actifs</li><li>A.9 — Contrôle d accès</li><li>A.10 — Cryptographie</li><li>A.11 — Sécurité physique</li><li>A.12 — Sécurité opérationnelle</li><li>A.13 — Communications</li><li>A.14 — Acquisition/développement</li><li>A.15 — Relations fournisseurs</li><li>A.16 — Incidents</li><li>A.17 — Continuité</li><li>A.18 — Conformité</li></ul><h3>Mise en œuvre en banque</h3><ul><li><strong>Politique SSI</strong> validée par la direction</li><li><strong>Analyse de risques</strong> (EBIOS RM, ISO 27005)</li><li><strong>Déclaration d applicabilité</strong> (SoA) — quels contrôles on applique</li><li><strong>Audit interne</strong> annuel</li><li><strong>Revue de direction</strong> annuelle</li><li><strong>Certification</strong> par organisme accrédité</li></ul><h3>Certifications complémentaires</h3><ul><li><strong>ISO 27017</strong> — sécurité cloud</li><li><strong>ISO 27018</strong> — données personnelles cloud</li><li><strong>ISO 27032</strong> — cybersécurité</li><li><strong>ISO 22301</strong> — continuité d activité</li></ul><h3>Avantages</h3><ul><li>Confiance clients</li><li>Conformité réglementaire</li><li>Réduction des risques</li><li>Image de marque</li><li>Avantage concurrentiel</li></ul><div class=\"box\">ISO 27001 = la certification qui dit « nous avons un système de sécurité organisé ». Ce n est pas un label technique mais managérial.</div><div class=\"bank\">Banques : ISO 27001 + PCI-DSS + BCEAO = trio gagnant de la conformité.</div><div class=\"warn\">ISO 27001 mal mise en œuvre = classeur qui dort. La valeur est dans l application quotidienne.</div>",
+cas:"<h3>Cas 1 — Analyse de risques EBIOS RM</h3><ol><li>Cadrage et socle</li><li>Sources de risque</li><li>Scénarios stratégiques</li><li>Scénarios opérationnels</li><li>Traitement du risque</li></ol><h3>Cas 2 — Politique SSI</h3><ul><li>Engagement de la direction</li><li>Objectifs de sécurité</li><li>Rôles et responsabilités</li><li>Règles d usage</li><li>Sanctions en cas de violation</li><li>Révision annuelle</li></ul><h3>Cas 3 — SoA (Statement of Applicability)</h3><p>Tableau listant les 93 contrôles avec :</p><ul><li>Applicable ou non</li><li>Justification</li><li>État de mise en œuvre</li><li>Responsable</li></ul>",
+quiz:[
+{q:'ISO 27001 = ?',o:['Norme SMSI','Antivirus','Firewall','VPN'],c:0,e:'SMSI.'},
+{q:'EBIOS RM ?',o:['Analyse risques','Antivirus','Chiffrement','Cloud'],c:0,e:'Risques.'}
+]},
+
+{id:6, titre:"Gestion des risques cyber", intro:"Identifier, évaluer, traiter les risques : c est le cœur du métier de RSSI. Sans méthode, on gère dans le brouillard.",
+cours:"<h3>Qu est-ce qu un risque</h3><p><strong>Risque</strong> = combinaison d une <strong>menace</strong> (qui), d une <strong>vulnérabilité</strong> (faiblesse) et d un <strong>impact</strong> (conséquence).</p><h3>Formule</h3><p><code>Risque = Probabilité × Impact</code></p><h3>Sources de risque</h3><ul><li><strong>Humaines internes</strong> — employé malveillant, erreur</li><li><strong>Humaines externes</strong> — hacker, concurrent</li><li><strong>Environnementales</strong> — incendie, inondation</li><li><strong>Techniques</strong> — panne, bug</li></ul><h3>Méthodes</h3><ul><li><strong>EBIOS RM</strong> — ANSSI, référence française</li><li><strong>ISO 27005</strong> — internationale</li><li><strong>NIST RMF</strong> — américaine</li><li><strong>MEHARI</strong> — CLUSIF</li><li><strong>OCTAVE</strong> — SEI</li></ul><h3>Traitement du risque</h3><ul><li><strong>Réduire</strong> — mettre en place un contrôle (pare-feu, chiffrement)</li><li><strong>Accepter</strong> — le risque est faible ou l impact acceptable</li><li><strong>Transférer</strong> — assurance cyber</li><li><strong>Éviter</strong> — arrêter l activité risquée</li></ul><h3>Matrice de risque</h3><table><tr><th>Impact / Probabilité</th><th>Faible</th><th>Moyen</th><th>Fort</th></tr><tr><td>Fort</td><td>Moyen</td><td>Élevé</td><td>Critique</td></tr><tr><td>Moyen</td><td>Faible</td><td>Moyen</td><td>Élevé</td></tr><tr><td>Faible</td><td>Négligeable</td><td>Faible</td><td>Moyen</td></tr></table><h3>Risques bancaires typiques</h3><ul><li>Fraude interne</li><li>Phishing clients</li><li>Ransomware</li><li>Compromission SWIFT</li><li>Fuite de données</li><li>Indisponibilité du core banking</li><li>Déni de service sur les paiements</li></ul><div class=\"box\">Gérer le risque = prévoir le pire et décider à l avance de ce qu on fait. Pas de surprise.</div><div class=\"bank\">Chaque banque doit avoir une cartographie des risques SI validée par la direction et auditée annuellement.</div><div class=\"warn\">Un risque non identifié est un risque NON géré. Documenter TOUS les risques, même les plus improbables.</div>",
+cas:"<h3>Cas 1 — Cartographie des risques</h3><table><tr><th>Risque</th><th>Probabilité</th><th>Impact</th><th>Niveau</th></tr><tr><td>Phishing clients</td><td>Fort</td><td>Moyen</td><td>Élevé</td></tr><tr><td>Ransomware</td><td>Moyen</td><td>Fort</td><td>Élevé</td></tr><tr><td>Fuite SWIFT</td><td>Faible</td><td>Fort</td><td>Élevé</td></tr><tr><td>DDoS paiements</td><td>Moyen</td><td>Moyen</td><td>Moyen</td></tr><tr><td>Erreur admin</td><td>Fort</td><td>Faible</td><td>Faible</td></tr></table><h3>Cas 2 — Plan de traitement</h3><p>Pour chaque risque élevé :</p><ul><li>Contrôle à mettre en place (ex : MFA)</li><li>Responsable (ex : DSI)</li><li>Budget</li><li>Délai</li><li>Indicateur de suivi</li></ul><h3>Cas 3 — Assurance cyber</h3><p>Transférer les risques résiduels via une assurance cyber : couvre les frais de restauration, rançon, pertes d exploitation, frais juridiques.</p>",
+quiz:[
+{q:'Risque = ?',o:['Probabilité × Impact','Antivirus','Firewall','VPN'],c:0,e:'Probabilité × impact.'},
+{q:'EBIOS RM ?',o:['Méthode risques','Antivirus','Cloud','Firewall'],c:0,e:'ANSSI.'}
+]},
+
+{id:7, titre:"Lutte anti-blanchiment (LAB/CFT) et fraude", intro:"La lutte contre le blanchiment est LA priorité des régulateurs bancaires. La cyber et la LAB sont liées.",
+cours:"<h3>Qu est-ce que le blanchiment</h3><p><strong>Blanchiment</strong> = processus visant à rendre légale de l argent d origine criminelle. En 3 étapes :</p><ol><li><strong>Placement</strong> — injecter l argent sale dans le système</li><li><strong>Empilement</strong> — multiplier les transactions pour brouiller les traces</li><li><strong>Intégration</strong> — récupérer l argent blanchi</li></ol><h3>Les 3 volets</h3><ul><li><strong>LAB</strong> — Lutte Anti-Blanchiment</li><li><strong>CFT</strong> — Combating the Financing of Terrorism</li><li><strong>Sanctions internationales</strong> — gel des avoirs</li></ul><h3>Obligations bancaires</h3><ul><li><strong>KYC</strong> (Know Your Customer) — vérifier l identité</li><li><strong>KYB</strong> (Know Your Business) — vérifier les entreprises</li><li><strong>Surveillance des transactions</strong> — détecter anomalies</li><li><strong>Déclaration de soupçon</strong> — CENTIF</li><li><strong>Gel des avoirs</strong> — personnes sanctionnées</li><li><strong>Formation</strong> — personnel sensibilisé</li></ul><h3>Autorités</h3><ul><li><strong>CENTIF</strong> — Cellule Nationale de Traitement des Informations Financières (Côte d Ivoire)</li><li><strong>GIABA</strong> — Afrique de l Ouest</li><li><strong>GAFI</strong> — international</li></ul><h3>Fraude bancaire typique</h3><ul><li><strong>Fraude interne</strong> — employé détourne</li><li><strong>Phishing</strong> — identifiants volés</li><li><strong>Fraude au président</strong> — faux ordre d un dirigeant</li><li><strong>Fraude CB</strong> — carding, skimming</li><li><strong>Fraude mobile money</strong> — SIM swap, phishing SMS</li></ul><h3>Lien cyber-LAB</h3><ul><li>Un compte compromis peut servir au blanchiment</li><li>Les cybercriminels blanchissent via crypto et mobile money</li><li>Les outils SOC aident à détecter les fraudes</li><li>Les logs sont des preuves en cas d enquête</li></ul><div class=\"box\">La LAB n est pas qu une affaire de compliance : c est aussi un métier de data analystes et d enquêteurs.</div><div class=\"bank\">Chaque banque a un service LAB/Compliance indépendant du business. Toute déclaration de soupçon est confidentielle.</div><div class=\"warn\">Ne PAS déclarer un soupçon = délit pénal pour le banquier. Amende personnelle possible.</div>",
+cas:"<h3>Cas 1 — Détecter une fraude</h3><ul><li>Transactions atypiques (montants, horaires)</li><li>Comptes dormant réactivés</li><li>Virements vers pays à risque</li><li>Nombreuses transactions fractionnées</li><li>Same IP, différents comptes</li></ul><h3>Cas 2 — Déclaration de soupçon</h3><ol><li>Détecter un comportement suspect</li><li>Documenter (logs, transactions)</li><li>Remonter au compliance officer</li><li>Décision de déclarer ou non</li><li>Transmission à CENTIF</li><li>Confidentialité absolue</li></ol><h3>Cas 3 — Fraude au président</h3><p>Un attaquant se fait passer pour le DG par email. Demande un virement urgent et confidentiel.</p><p>Détection : vérifier l adresse email, appeler le DG, vérifier les procédures.</p>",
+quiz:[
+{q:'KYC = ?',o:['Know Your Customer','Antivirus','Firewall','Cloud'],c:0,e:'Connaissance client.'},
+{q:'Déclaration soupçon ?',o:['CENTIF','Google','Microsoft','AWS'],c:0,e:'CENTIF.'}
+]},
+
+{id:8, titre:"Sécurité du mobile money", intro:"Le mobile money est massif en Afrique. Orange Money, MTN MoMo, Wave... Comprendre leur sécurité est devenu essentiel.",
+cours:"<h3>Le mobile money en Côte d Ivoire</h3><table><tr><th>Service</th><th>Opérateur</th><th>Utilisateurs</th></tr><tr><td>Orange Money</td><td>Orange CI</td><td>Millions</td></tr><tr><td>MTN MoMo</td><td>MTN CI</td><td>Millions</td></tr><tr><td>Moov Money</td><td>Moov Africa</td><td>Millions</td></tr><tr><td>Wave</td><td>Wave Mobile</td><td>Croissance rapide</td></tr></table><h3>Comment ça marche</h3><ol><li>Client ouvre compte (KYC simplifié)</li><li>Dépôt cash → crédit compte mobile</li><li>Transfert entre comptes</li><li>Retrait cash via agent</li></ol><h3>Régulation</h3><ul><li>BCEAO — instruction 008-2018 sur établissements de paiement</li><li>ARTCI — télécoms</li><li>Obligations LAB/CFT renforcées</li><li>Plafonds de transaction</li></ul><h3>Failles de sécurité typiques</h3><ul><li><strong>SIM swap</strong> — attaquant obtient une nouvelle SIM au nom de la victime</li><li><strong>Phishing SMS</strong> — faux message demande les identifiants</li><li><strong>USSD spoofing</strong> — réception d appels frauduleux</li><li><strong>Compromission agent</strong> — agent malhonnête</li><li><strong>API mobile mal sécurisée</strong> — interception, replay</li><li><strong>Malware mobile</strong> — app bancaire trojanisée</li></ul><h3>Protection</h3><ul><li><strong>Double authentification</strong> — code PIN + OTP</li><li><strong>Cryptographie</strong> — TLS sur l API</li><li><strong>Chiffrement local</strong> — données app</li><li><strong>Anti-tampering</strong> — détecter le root</li><li><strong>Biométrie</strong> — empreinte, face</li><li><strong>Détection SIM swap</strong> — alerter sur changement SIM</li><li><strong>Limites de transaction</strong></li></ul><div class=\"box\">Le mobile money est une banque dans votre poche. Sa sécurité dépend autant de l opérateur que de vous (ne pas cliquer sur les SMS louches).</div><div class=\"bank\">Le mobile money est LE canal de paiement en croissance en CI. La sécuriser est une priorité BCEAO.</div><div class=\"warn\">Un SIM swap peut vider un compte en 5 minutes. Activer la double authentification est vital.</div>",
+cas:"<h3>Cas 1 — SIM swap</h3><ol><li>Attaquant obtient les infos personnelles de la victime</li><li>Se fait passer pour elle auprès de l opérateur</li><li>Obtient une nouvelle SIM au nom de la victime</li><li>Reçoit les OTP à sa place</li><li>Vide le compte mobile money</li></ol><p>Protection : MFA biométrique, alerte changement SIM, code secret opérateur.</p><h3>Cas 2 — Phishing SMS</h3><p>« Votre compte est suspendu, cliquez ici pour réactiver : bit.ly/xxxxx »</p><p>Détection : URL suspecte, pas le vrai domaine, urgence anormale.</p><h3>Cas 3 — Sécurité API</h3><pre>GET /api/balance\nAuthorization: Bearer eyJhbGc...\n\n# Vérifications côté serveur\n- Token valide et non expiré\n- Device fingerprint\n- Rate limiting\n- Logs de toutes les requêtes</pre>",
+quiz:[
+{q:'SIM swap ?',o:['Attaque mobile','Antivirus','Chiffrement','Cloud'],c:0,e:'Attaque.'},
+{q:'Régulateur paiement ?',o:['BCEAO','CNIL','Google','AWS'],c:0,e:'BCEAO.'}
+]},
+
+{id:9, titre:"Audit et contrôle interne SI", intro:"L audit interne vérifie que les contrôles fonctionnent. C est la clé de la conformité durable.",
+cours:"<h3>Qu est-ce que l audit</h3><p><strong>Audit</strong> = processus indépendant et objectif d évaluation des contrôles, processus et systèmes pour vérifier leur conformité aux normes et leur efficacité.</p><h3>Types d audit</h3><ul><li><strong>Audit interne</strong> — réalisé par la banque elle-même</li><li><strong>Audit externe</strong> — cabinet indépendant</li><li><strong>Audit réglementaire</strong> — par la BCEAO ou mandaté</li><li><strong>Audit de certification</strong> — ISO, PCI-DSS</li></ul><h3>Normes d audit</h3><ul><li><strong>ISA</strong> — International Standards on Auditing</li><li><strong>IIA</strong> — Institute of Internal Auditors</li><li><strong>COBIT</strong> — gouvernance IT</li><li><strong>ISO 19011</strong> — audit de systèmes de management</li></ul><h3>Phases d un audit</h3><ol><li>Planification (objectifs, périmètre)</li><li>Collecte d informations (interviews, docs)</li><li>Tests de contrôle (vérifier l efficacité)</li><li>Analyse et conclusions</li><li>Rapport d audit</li><li>Suivi des recommandations</li></ol><h3>Contrôles typiques SI</h3><ul><li>Gestion des accès (IAM)</li><li>Gestion des changements</li><li>Sauvegardes et restauration</li><li>Surveillance des logs</li><li>Gestion des incidents</li><li>Sécurité physique (datacenter)</li><li>Formation utilisateurs</li></ul><h3>Rapport d audit</h3><ul><li>Contexte et périmètre</li><li>Méthodologie</li><li>Constats (findings)</li><li>Recommandations</li><li>Plan d action</li><li>Conclusion</li></ul><h3>Suivi</h3><p>Chaque recommandation doit être :</p><ul><li>Suivie par un responsable désigné</li><li>Datée (échéance)</li><li>Vérifiée</li><li>Documentée</li></ul><div class=\"box\">Un audit n est pas une attaque contre les équipes, c est une amélioration continue. Un bon auditeur est un partenaire.</div><div class=\"bank\">Les banques ont un département d audit interne (conformité) + audit externe + audit BCEAO. Un triple niveau.</div><div class=\"warn\">Une recommandation d audit non suivie peut coûter la licence bancaire. La direction est responsable.</div>",
+cas:"<h3>Cas 1 — Audit d accès</h3><ul><li>Lister les comptes admin</li><li>Vérifier la séparation des rôles</li><li>Contrôler les revues d accès trimestrielles</li><li>Détecter les comptes orphelins</li><li>Vérifier la MFA sur tous les comptes sensibles</li></ul><h3>Cas 2 — Audit de sauvegarde</h3><ul><li>Vérifier la fréquence</li><li>Tester la restauration</li><li>Vérifier le chiffrement</li><li>Vérifier la copie hors site</li><li>Documenter les tests</li></ul><h3>Cas 3 — Rapport type</h3><p>Exemple finding :</p><ul><li>Constat : les mots de passe administrateurs ne sont pas renouvelés tous les 90 jours</li><li>Risque : compromission prolongée non détectée</li><li>Recommandation : appliquer une rotation automatique</li><li>Responsable : DSI</li><li>Échéance : 60 jours</li><li>Criticité : élevée</li></ul>",
+quiz:[
+{q:'Audit ?',o:['Vérifier conformité','Attaquer','Chiffrer','Firewall'],c:0,e:'Conformité.'},
+{q:'Suivi reco ?',o:['Responsable + échéance','Rien','Facultatif','Reporté'],c:0,e:'Responsable.'}
+]},
+
+{id:10, titre:"PCA, réponse à incident et synthèse", intro:"Le plan de continuité et la réponse à incident sont l assurance-vie d une banque. Synthèse du parcours complet.",
+cours:"<h3>PCA / PRA</h3><ul><li><strong>PCA</strong> (Plan de Continuité d Activité) — maintenir les activités en cas de sinistre</li><li><strong>PRA</strong> (Plan de Reprise d Activité) — redémarrer les systèmes après un sinistre</li><li><strong>PCI</strong> (Plan de Continuité Informatique) — spécifique IT</li></ul><h3>Objectifs</h3><ul><li><strong>RTO</strong> (Recovery Time Objective) — temps max d interruption</li><li><strong>RPO</strong> (Recovery Point Objective) — perte de données max</li></ul><p>Banque : RTO &lt; 4h, RPO &lt; 15 min pour les systèmes critiques.</p><h3>Composants d un PCA</h3><ul><li>Analyse d impact sur l activité (BIA)</li><li>Scénarios de sinistre</li><li>Procédures de crise</li><li>Cellule de crise</li><li>Site de repli</li><li>Tests annuels</li></ul><h3>Réponse à incident</h3><ol><li><strong>Détection</strong> — SIEM, EDR, alertes</li><li><strong>Qualification</strong> — vrai incident ?</li><li><strong>Confinement</strong> — isoler sans détruire les preuves</li><li><strong>Éradication</strong> — supprimer la menace</li><li><strong>Rétablissement</strong> — restaurer</li><li><strong>Leçons apprises</strong> — post-mortem</li><li><strong>Notification</strong> — BCEAO, ARTCI, clients</li></ol><h3>Cellule de crise</h3><ul><li>RSSI — pilote</li><li>DSI — technique</li><li>DG — décision</li><li>Communication — presse</li><li>Juridique — aspects légaux</li><li>RH — si interne</li></ul><h3>Synthèse du parcours</h3><table><tr><th>Niveau</th><th>Compétence clé</th></tr><tr><td>1</td><td>Fondamentaux IT</td></tr><tr><td>2</td><td>Réseaux</td></tr><tr><td>3</td><td>Linux/Windows</td></tr><tr><td>4</td><td>Cryptographie</td></tr><tr><td>5</td><td>Sécurité Web</td></tr><tr><td>6</td><td>Pentest</td></tr><tr><td>7</td><td>Analyse malware</td></tr><tr><td>8</td><td>Forensics</td></tr><tr><td>9</td><td>Cloud/DevSecOps</td></tr><tr><td>10</td><td>Bancaire/Conformité</td></tr></table><div class=\"box\">Le PCA = le parachute d une banque. On espère ne jamais s en servir. Mais on prie pour qu il soit bien plié le jour J.</div><div class=\"bank\">BCEAO impose un PCA testé annuellement. Une banque sans PCA valide peut perdre sa licence.</div><div class=\"warn\">Un incident non notifié à la BCEAO sous 72h = amende automatique. Toujours notifier, même en cas de doute.</div><div class=\"good\">🎓 Tu as terminé les 10 niveaux ! Ton parcours est complet. Tu as les bases pour débuter en cyber bancaire en Côte d Ivoire.</div>",
+cas:"<h3>Cas 1 — PCA bancaire</h3><ol><li>BIA — quels systèmes critiques ?</li><li>RTO/RPO pour chaque système</li><li>Site de repli (data center secondaire)</li><li>Procédures de basculement</li><li>Cellule de crise (noms, contacts)</li><li>Tests annuels documentés</li></ol><h3>Cas 2 — Incident ransomware</h3><ol><li>Détection : alerte EDR</li><li>Isolation : couper le réseau</li><li>Analyse : forensics</li><li>Éradication : supprimer le malware</li><li>Rétablissement : restaurer depuis backup</li><li>Notification : BCEAO, ARTCI, clients</li><li>Leçons apprises : renforcer</li></ol><h3>Cas 3 — Simulation de crise</h3><p>Faire un exercice annuel :</p><ul><li>Scénario : ransomware sur le core banking</li><li>Acteurs : RSSI, DSI, DG, communication</li><li>Objectif : tester le PCA</li><li>Durée : 4h</li><li>Livrable : rapport d exercice</li></ul>",
+quiz:[
+{q:'PCA ?',o:['Plan Continuité Activité','Antivirus','Chiffrement','Cloud'],c:0,e:'Continuité.'},
+{q:'RTO ?',o:['Temps max interruption','Antivirus','Firewall','Cloud'],c:0,e:'Recovery Time.'}
+]}
+];
+
+var CERTS = [
+{id:'iso27001-la', nom:'ISO 27001 Lead Auditor', org:'PECB', free:false, prix:'~800-1500 USD', niv:'Expert', lien:'https://pecb.com/en/education-and-certification-for-individuals/iso-iec-27001', desc:'Audit SMSI — banque.'},
+{id:'iso27001-li', nom:'ISO 27001 Lead Implementer', org:'PECB', free:false, prix:'~800-1500 USD', niv:'Expert', lien:'https://pecb.com/en/education-and-certification-for-individuals/iso-iec-27001', desc:'Mise en œuvre SMSI.'},
+{id:'cisa', nom:'CISA', org:'ISACA', free:false, prix:'~760 USD', niv:'Expert', lien:'https://www.isaca.org/credentialing/cisa', desc:'Audit SI — banque !'},
+{id:'crisc', nom:'CRISC', org:'ISACA', free:false, prix:'~760 USD', niv:'Expert', lien:'https://www.isaca.org/credentialing/crisc', desc:'Risques SI, BCEAO.'},
+{id:'cism', nom:'CISM', org:'ISACA', free:false, prix:'~760 USD', niv:'Expert', lien:'https://www.isaca.org/credentialing/cism', desc:'Management sécurité.'},
+{id:'cissp', nom:'CISSP', org:'ISC2', free:false, prix:'~749 USD', niv:'Expert', lien:'https://www.isc2.org/certifications/cissp', desc:'RSSI.'},
+{id:'cgeit', nom:'CGEIT', org:'ISACA', free:false, prix:'~760 USD', niv:'Expert', lien:'https://www.isaca.org/credentialing/cgeit', desc:'Gouvernance IT.'},
+{id:'acams', nom:'CAMS', org:'ACAMS', free:false, prix:'~1500 USD', niv:'Expert', lien:'https://www.acams.org/en/certifications/cams', desc:'Anti-blanchiment (LAB).'},
+{id:'cfcs', nom:'CFCS', org:'ACAMS', free:false, prix:'~1500 USD', niv:'Expert', lien:'https://www.acams.org/en/certifications/cfcs', desc:'Financial Crime Specialist.'},
+{id:'iso22301', nom:'ISO 22301 Lead Auditor', org:'PECB', free:false, prix:'~800-1500 USD', niv:'Expert', lien:'https://pecb.com/en/education-and-certification-for-individuals/iso-22301', desc:'Continuité d activité.'}
+];
+
+var JOBS = [
+{t:'Auditeur SI Bancaire', o:'Groupe COFINA', l:'Abidjan', d:'Audit interne, conformité BCEAO.', u:'https://www.groupecofina.com/carriere/'},
+{t:'Analyste Conformité', o:'BDU CI', l:'Abidjan', d:'PCI-DSS, ISO 27001.', u:'https://bduci.com/'},
+{t:'RSSI Junior', o:'DC/BR UMOA', l:'Abidjan', d:'Sécurité SI, gouvernance.', u:'https://www.dcbruemoa.org/'},
+{t:'Stagiaire Compliance', o:'AFG Holding', l:'Abidjan', d:'LAB, KYC, audit.', u:'https://afgholding-sa.com/'},
+{t:'Analyste SOC Bancaire', o:'Djamo', l:'Abidjan', d:'SIEM, fraude.', u:'https://djamo.com/'},
+{t:'Ingénieur Cyber Bancaire', o:'Eclozion', l:'Abidjan', d:'Sécurité bancaire.', u:'https://ci.eclozion-opportunities.com/'}
+];
+
+var EXAMENS = {
+partiel: {
+  titre:'Partiel — Défis 1-5',
+  desc:'Secteur bancaire, BCEAO, PCI-DSS, loi 2013-450, ISO 27001. Réussite : 60 %.',
+  req:[1,2,3,4,5],
+  qs:[
+    {q:'Régulateur bancaire CI ?',o:['BCEAO','Google','AWS','Microsoft'],c:0,e:'BCEAO.'},
+    {q:'Délai notification incident ?',o:['72h','1 mois','1 an','Aucun'],c:0,e:'72h.'},
+    {q:'Stocker CVV ?',o:['Autorisé','Interdit','Parfois','Recommandé'],c:1,e:'Interdit.'},
+    {q:'Loi CI protection données ?',o:['2013-450','RGPD','CCPA','Aucune'],c:0,e:'2013-450.'},
+    {q:'ISO 27001 ?',o:['Norme SMSI','Antivirus','Firewall','VPN'],c:0,e:'SMSI.'}
+  ]
+},
+final: {
+  titre:'Final — Défis 1-10',
+  desc:'Complet. Réussite : 80 %.',
+  req:[1,2,3,4,5,6,7,8,9,10],
+  qs:[
+    {q:'Risque = ?',o:['Probabilité × Impact','Antivirus','Firewall','VPN'],c:0,e:'Probabilité × impact.'},
+    {q:'EBIOS RM ?',o:['Méthode risques','Antivirus','Cloud','Firewall'],c:0,e:'ANSSI.'},
+    {q:'KYC ?',o:['Know Your Customer','Antivirus','Cloud','Firewall'],c:0,e:'Connaissance client.'},
+    {q:'SIM swap ?',o:['Attaque mobile','Antivirus','Chiffrement','Cloud'],c:0,e:'Attaque.'},
+    {q:'PCA ?',o:['Plan Continuité Activité','Antivirus','Chiffrement','Cloud'],c:0,e:'Continuité.'},
+    {q:'RTO ?',o:['Temps max interruption','Antivirus','Firewall','Cloud'],c:0,e:'Recovery Time.'},
+    {q:'Audit ?',o:['Vérifier conformité','Attaquer','Chiffrer','Firewall'],c:0,e:'Conformité.'},
+    {q:'Déclaration soupçon ?',o:['CENTIF','Google','Microsoft','AWS'],c:0,e:'CENTIF.'},
+    {q:'Audit BCEAO ?',o:['Annuel','Jamais','5 ans','Mensuel'],c:0,e:'Annuel.'},
+    {q:'Niveau PCI banque importante ?',o:['1','4','Aucun','Facultatif'],c:0,e:'Niveau 1.'}
+  ]
+}
+};
+
+function header() {
+  var el = document.getElementById('hs'); if (!el) return;
+  var u = user();
+  if (u) {
+    el.innerHTML = '<span class="pill">👤 ' + u.name + '</span>' +
+      '<span class="pill">N1 <b>' + countDone(1) + '</b></span>' +
+      '<span class="pill">N2 <b>' + countDone(2) + '</b></span>' +
+      '<span class="pill">N3 <b>' + countDone(3) + '</b></span>' +
+      '<span class="pill">N4 <b>' + countDone(4) + '</b></span>' +
+      '<span class="pill">N5 <b>' + countDone(5) + '</b></span>' +
+      '<span class="pill">N6 <b>' + countDone(6) + '</b></span>' +
+      '<span class="pill">N7 <b>' + countDone(7) + '</b></span>' +
+      '<span class="pill">N8 <b>' + countDone(8) + '</b></span>' +
+      '<span class="pill">N9 <b>' + countDone(9) + '</b></span>' +
+      '<span class="pill">N10 <b>' + countDone(10) + '</b></span>' +
+      '<a onclick="logout()">Déconnexion</a>';
+  } else { el.innerHTML = '<span class="pill">Non connecté</span>'; }
+}
+
+function renderLogin() {
+  document.getElementById('app').innerHTML = '<div class="login-box"><div style="text-align:center;margin-bottom:18px"><div style="display:inline-block;width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#fbbf24,#d97706);display:flex;align-items:center;justify-content:center;font-size:1.7rem">🏦</div></div><h2>Niveau 10 — Final</h2><p style="text-align:center;color:#94a3b8;font-size:.85rem;margin-bottom:22px">Connecte-toi pour accéder au niveau Bancaire &amp; Conformité CI.</p><input id="loginName" placeholder="Ton prénom" autocomplete="off"><button onclick="login()">Se connecter</button></div>';
+  setTimeout(function(){ var e = document.getElementById('loginName'); if (e) e.focus(); }, 100);
+}
+
+function renderLocked() {
+  var d9 = countDone(9);
+  document.getElementById('app').innerHTML = '<div class="card"><div class="locked"><div class="icon">🔒</div><h3>Niveau 10 verrouillé</h3><p>Termine les 10 défis du Niveau 9 pour accéder au dernier niveau.</p><div class="bar"><div style="width:' + (d9*10) + '%"></div></div><p style="color:#fbbf24;font-weight:700;margin-top:10px">' + d9 + ' / 10 défis Niveau 9</p><div class="nav" style="justify-content:center;margin-top:14px"><button onclick="simulate()">🔓 Simuler N1 à N9</button></div></div></div>';
+}
+
+function renderHome() {
+  var u = user(); if (!u) return renderLogin();
+  var d = countDone(10);
+  var pct = Math.round(d / 10 * 100);
+  var html = '<div class="card"><h2>Bienvenue, ' + u.name + ' 🏦</h2><p>Niveau 10 : <strong>Bancaire &amp; Conformité CI</strong>. BCEAO, PCI-DSS, loi 2013-450, ISO 27001, LAB, PCA.</p>';
+  html += '<div class="stats-grid"><div class="stat"><span class="big">' + d + '/10</span><span class="lbl">Défis N10</span></div><div class="stat"><span class="big">' + u.certs.length + '</span><span class="lbl">Certifs</span></div><div class="stat"><span class="big">' + pct + '%</span><span class="lbl">Progression</span></div><div class="stat"><span class="big">' + (u.examens['10_partiel'] ? '✅' : '—') + '</span><span class="lbl">Partiel</span></div></div>';
+  html += '<div class="progress-bar"><div style="width:' + pct + '%"></div></div></div>';
+  html += '<div class="card"><h2>🚀 Accès rapide</h2><div class="nav">';
+  html += '<button onclick="go(\'\')">📚 Défis</button>';
+  html += '<button class="sec" onclick="go(\'stats\')">📊 Stats</button>';
+  html += '<button class="gold" onclick="go(\'certif\')">🎓 Certificat</button>';
+  html += '<button class="sec" onclick="go(\'cv\')">📄 CV</button>';
+  html += '<button class="sec" onclick="go(\'jobs\')">💼 Emploi</button>';
+  html += '<button class="sec" onclick="go(\'examens\')">📝 Examens</button>';
+  html += '<button class="sec" onclick="go(\'certs\')">🎓 Certifications</button>';
+  html += '<button class="sec" onclick="go(\'sync\')">🌐 Sync</button>';
+  html += '</div></div>';
+  html += '<div class="card"><h2>🎯 Les 10 défis du Niveau 10</h2><div class="grid">';
+  for (var i = 0; i < DEFIS.length; i++) {
+    var df = DEFIS[i];
+    var done = u.done['10_' + df.id];
+    html += '<div class="btn ' + (done ? 'done' : '') + '" onclick="go(\'defi/' + df.id + '\')"><span class="n">Défi ' + df.id + (done ? ' ✓' : '') + '</span><span class="ti">' + df.titre + '</span></div>';
+  }
+  html += '</div></div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function renderDefi(id) {
+  var d = null;
+  for (var i = 0; i < DEFIS.length; i++) { if (DEFIS[i].id === id) { d = DEFIS[i]; break; } }
+  if (!d) { alert('Défi introuvable'); go('home'); return; }
+  var u = user();
+  var done = u.done['10_' + id];
+  var html = '<div class="crumb"><a onclick="go(\'home\')">Accueil N10</a> / Défi ' + id + '</div>';
+  html += '<div class="card"><h2>' + d.titre + '</h2><div class="intro">' + d.intro + '</div></div>';
+  html += '<div class="card cours"><h2>📖 Cours</h2>' + d.cours + '</div>';
+  html += '<div class="card cours"><h2>🔧 Cas pratiques</h2>' + d.cas + '</div>';
+  html += '<div class="card"><h2>📝 Quiz</h2><div class="quiz">';
+  for (var qi = 0; qi < d.quiz.length; qi++) {
+    var q = d.quiz[qi];
+    html += '<div class="q" data-i="' + qi + '"><p>Q' + (qi + 1) + '. ' + q.q + '</p>';
+    for (var oi = 0; oi < q.o.length; oi++) {
+      html += '<label><input type="radio" name="q' + qi + '" value="' + oi + '"> ' + q.o[oi] + '</label>';
+    }
+    html += '<div class="exp" id="exp' + qi + '">' + q.e + '</div></div>';
+  }
+  html += '<button onclick="validerQuiz(' + id + ')">Vérifier</button><div id="qr"></div></div></div>';
+  html += '<div class="nav">';
+  if (id > 1) html += '<button class="sec" onclick="go(\'defi/' + (id - 1) + '\')">← Précédent</button>';
+  if (id < 10) html += '<button class="sec" onclick="go(\'defi/' + (id + 1) + '\')">Suivant →</button>';
+  html += '<button onclick="go(\'home\')">🏠 Accueil</button>';
+  if (done) html += '<button class="sec">✓ Validé</button>';
+  html += '</div>';
+  document.getElementById('app').innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+function validerQuiz(id) {
+  var d = null;
+  for (var i = 0; i < DEFIS.length; i++) { if (DEFIS[i].id === id) { d = DEFIS[i]; break; } }
+  if (!d) return;
+  var correct = 0;
+  for (var qi = 0; qi < d.quiz.length; qi++) {
+    var q = d.quiz[qi];
+    var sel = document.querySelector('input[name="q' + qi + '"]:checked');
+    var labels = document.querySelectorAll('.q[data-i="' + qi + '"] label');
+    for (var li = 0; li < labels.length; li++) { labels[li].classList.remove('ok','ko'); }
+    var e = document.getElementById('exp' + qi); if (e) e.style.display = 'block';
+    if (sel && parseInt(sel.value) === q.c) { correct++; labels[q.c].classList.add('ok'); }
+    else { labels[q.c].classList.add('ok'); if (sel) labels[parseInt(sel.value)].classList.add('ko'); }
+  }
+  var u = user();
+  if (correct === d.quiz.length) {
+    var k = '10_' + id;
+    if (!u.done[k]) {
+      u.done[k] = true;
+      var t = today();
+      if (!u.jours[t]) u.jours[t] = [];
+      if (u.jours[t].indexOf(k) === -1) u.jours[t].push(k);
+    }
+  }
+  save();
+  var r = document.getElementById('qr');
+  var pass = correct === d.quiz.length;
+  r.className = 'res ' + (pass ? 'g' : 'r');
+  r.textContent = pass ? '🎉 ' + correct + '/' + d.quiz.length + ' — Défi validé !' : correct + '/' + d.quiz.length + ' — Réessaie';
+  if (pass && id === 10 && isComplete(10)) {
+    setTimeout(function(){ alert('🏆 FÉLICITATIONS !\n\nTu as terminé le parcours complet des 10 niveaux !\n\nTu as maintenant toutes les bases pour débuter en cybersécurité bancaire en Côte d Ivoire.'); }, 400);
+  }
+}
+
+function renderCertif() {
+  var u = user(); if (!u) return;
+  var d = countDone(10);
+  var unlocked = d >= 10;
+  var certId = 'MDPC-N10-' + u.name.slice(0,3).toUpperCase() + '-' + d;
+  var html = '<div class="card">';
+  if (!unlocked) {
+    html += '<div class="locked"><div class="icon">🔒</div><h3>Certificat Final verrouillé</h3><p>Valide les 10 défis du niveau 10.</p><div class="bar"><div style="width:' + (d*10) + '%"></div></div><p style="color:#fbbf24;font-weight:700;margin-top:10px">' + d + ' / 10</p><div class="nav" style="justify-content:center;margin-top:14px"><button onclick="go(\'\')">📚 Continuer</button></div></div>';
+  } else {
+    html += '<div class="cert"><div class="seal">🎓</div><div class="sub">Certificat final — Parcours complet</div><div class="title">Cybersécurité Bancaire · Côte d Ivoire</div><p style="color:#94a3b8;margin:12px 0;font-size:.9rem">Décerné à</p><div class="name">' + u.name + '</div><p style="color:#94a3b8;max-width:540px;margin:12px auto;font-size:.88rem">Pour avoir complété les 10 niveaux du parcours Mon Drôle Parcours Cyber : fondamentaux, réseaux, Linux/Windows, cryptographie, sécurité web, pentest, analyse malware, forensics, cloud et bancaire.</p><div class="details"><div>Niveaux<strong>10/10</strong></div><div>Partiel<strong>' + (u.examens['10_partiel'] ? '✅' : '—') + '</strong></div><div>Final<strong>' + (u.examens['10_final'] ? '✅' : '—') + '</strong></div><div>Date<strong>' + new Date().toLocaleDateString('fr-FR') + '</strong></div></div><div class="id">ID : ' + certId + '</div><div class="sig"><div class="sig-block"><div class="sig-name">H. N\'GUESSAN</div><div class="sig-line">Fondateur</div></div><div class="sig-block"><div class="sig-name" style="font-family:Georgia,serif">' + new Date().toLocaleDateString('fr-FR') + '</div><div class="sig-line">Date</div></div></div></div>';
+    html += '<div class="nav" style="justify-content:center;margin-top:14px"><button onclick="window.print()">🖨️ PDF</button><button class="gold" onclick="go(\'cv\')">📄 CV</button></div>';
+  }
+  html += '</div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function renderCV() {
+  var u = user(); if (!u) return;
+  var badges = '';
+  for (var i = 0; i < u.certs.length; i++) {
+    for (var j = 0; j < CERTS.length; j++) {
+      if (CERTS[j].id === u.certs[i]) { badges += '<span class="badge">' + CERTS[j].nom + '</span>'; break; }
+    }
+  }
+  if (!badges) badges = '<span style="color:#94a3b8;font-size:.85rem;font-style:italic">Aucune certification.</span>';
+  var defis = '';
+  for (var i = 0; i < DEFIS.length; i++) {
+    defis += '<li>' + (u.done['10_' + DEFIS[i].id] ? '✓' : '○') + ' ' + DEFIS[i].titre + '</li>';
+  }
+  var html = '<div class="card" style="background:none;border:none;padding:0">';
+  html += '<div class="nav" style="margin-bottom:14px"><button onclick="window.print()">🖨️ PDF</button><button class="sec" onclick="copyCV()">📋 Copier</button></div>';
+  html += '<div class="cv-box"><h1>' + u.name.toUpperCase() + '</h1><div class="role">Étudiant L2 UVCI — Aspirant Analyste Cyber en Banque CI</div>';
+  html += '<h2>Formation</h2><ul><li>Licence 2 — UVCI (Sciences informatiques)</li><li>Mon Drôle Parcours Cyber N1 → N10 (parcours complet)</li></ul>';
+  html += '<h2>Compétences</h2><ul><li>Conformité bancaire (BCEAO, PCI-DSS, ISO 27001)</li><li>Loi ivoirienne 2013-450 (protection données)</li><li>Gestion des risques (EBIOS RM)</li><li>LAB/CFT, KYC, CENTIF</li><li>Sécurité mobile money</li><li>Audit et contrôle interne SI</li><li>PCA et réponse à incident</li><li>Cybersécurité technique (réseaux, Linux, pentest, forensics, cloud)</li></ul>';
+  html += '<h2>Défis N10 validés</h2><ul>' + defis + '</ul>';
+  html += '<h2>Certifications</h2><div>' + badges + '</div>';
+  html += '<p style="margin-top:20px;font-size:.72rem;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0;padding-top:12px">Généré le ' + new Date().toLocaleDateString('fr-FR') + ' · H. N\'GUESSAN ®</p></div></div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function copyCV() {
+  var u = user(); if (!u) return;
+  var t = u.name.toUpperCase() + '\nÉtudiant L2 UVCI — Aspirant Analyste Cyber en Banque CI\n\nParcours Cyber N1 à N10 (complet)\n\nCompétences : BCEAO, PCI-DSS, ISO 27001, LAB/CFT, mobile money, audit, PCA, cybersécurité technique\n\nGénéré le ' + new Date().toLocaleDateString('fr-FR');
+  if (navigator.clipboard) { navigator.clipboard.writeText(t).then(function(){ alert('CV copié !'); }, function(){ fbCopy(t); }); } else fbCopy(t);
+}
+function fbCopy(t) { var ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); alert('CV copié !'); } catch (e) { alert('Copie manuelle'); } document.body.removeChild(ta); }
+
+function renderStats() {
+  var u = user(); if (!u) return;
+  var t = today();
+  var tt = u.jours[t] || [];
+  var html = '<div class="card"><h2>📊 Statistiques — Parcours complet</h2><div class="stats-grid">';
+  html += '<div class="stat"><span class="big">' + countDone(1) + '</span><span class="lbl">N1</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(2) + '</span><span class="lbl">N2</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(3) + '</span><span class="lbl">N3</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(4) + '</span><span class="lbl">N4</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(5) + '</span><span class="lbl">N5</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(6) + '</span><span class="lbl">N6</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(7) + '</span><span class="lbl">N7</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(8) + '</span><span class="lbl">N8</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(9) + '</span><span class="lbl">N9</span></div>';
+  html += '<div class="stat"><span class="big">' + countDone(10) + '</span><span class="lbl">N10</span></div>';
+  html += '</div></div>';
+  html += '<div class="card"><h3>🔥 Aujourd hui</h3>';
+  if (tt.length === 0) html += '<p style="color:#94a3b8">Aucun défi.</p>';
+  else { html += '<ul class="today">'; for (var i = 0; i < tt.length; i++) { html += '<li>✅ ' + tt[i] + '</li>'; } html += '</ul>'; }
+  html += '</div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function renderJobs() {
+  var html = '<div class="card"><h2>💼 Offres banque CI</h2><div class="jobs-grid">';
+  for (var i = 0; i < JOBS.length; i++) {
+    var j = JOBS[i];
+    html += '<div class="job"><h4>' + j.t + '</h4><div class="org">' + j.o + ' · ' + j.l + '</div><p>' + j.d + '</p><a href="' + j.u + '" target="_blank">Voir ↗</a></div>';
+  }
+  html += '</div></div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function renderCerts() {
+  var u = user();
+  var html = '<div class="card"><h2>🎓 Certifications bancaires</h2><div class="tabs">';
+  html += '<div class="tab active" onclick="filterCerts(this,\'all\')">Toutes</div>';
+  html += '<div class="tab" onclick="filterCerts(this,\'free\')">Gratuites</div>';
+  html += '<div class="tab" onclick="filterCerts(this,\'paid\')">Payantes</div>';
+  html += '<div class="tab" onclick="filterCerts(this,\'done\')">Obtenues</div>';
+  html += '</div><div class="certs-grid">';
+  for (var i = 0; i < CERTS.length; i++) {
+    var c = CERTS[i];
+    var isD = u.certs.indexOf(c.id) !== -1;
+    html += '<div class="cert-item ' + (c.free ? 'free' : 'paid') + ' ' + (isD ? 'done' : '') + '" data-t="' + (c.free ? 'free' : 'paid') + '" data-d="' + (isD ? '1' : '0') + '">';
+    html += '<h4>' + c.nom + '</h4><div class="org">' + c.org + '</div>';
+    html += '<div><span class="tag ' + (c.free ? 'free' : 'paid') + '">' + (c.free ? 'GRATUIT' : c.prix) + '</span><span class="tag lvl">' + c.niv + '</span></div>';
+    html += '<p>' + c.desc + '</p><a href="' + c.lien + '" target="_blank">Voir ↗</a>';
+    html += ' <button class="sec" style="padding:5px 10px;font-size:.74em" onclick="toggleCert(\'' + c.id + '\')">' + (isD ? '✓' : 'Marquer') + '</button>';
+    html += '</div>';
+  }
+  html += '</div></div>';
+  document.getElementById('app').innerHTML = html;
+}
+function filterCerts(el, type) {
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  el.classList.add('active');
+  var items = document.querySelectorAll('.cert-item');
+  for (var i = 0; i < items.length; i++) {
+    var m = false;
+    if (type === 'all') m = true;
+    else if (type === 'done') m = items[i].dataset.d === '1';
+    else m = items[i].dataset.t === type;
+    items[i].style.display = m ? 'block' : 'none';
+  }
+}
+function toggleCert(id) {
+  var u = user(); if (!u) return;
+  var i = u.certs.indexOf(id);
+  if (i === -1) u.certs.push(id); else u.certs.splice(i, 1);
+  save(); renderCerts();
+}
+
+function renderExamens() {
+  var u = user(); if (!u) return;
+  var html = '<div class="card"><h2>📝 Examens N10</h2>';
+  var types = ['partiel','final'];
+  for (var i = 0; i < types.length; i++) {
+    var type = types[i];
+    var e = EXAMENS[type];
+    var passed = u.examens['10_' + type];
+    var ready = true;
+    for (var j = 0; j < e.req.length; j++) { if (!u.done['10_' + e.req[j]]) { ready = false; break; } }
+    var cls = 'exam ' + (passed ? 'passed' : (ready ? '' : 'locked'));
+    html += '<div class="' + cls + '"><h4>' + e.titre + '</h4><p style="font-size:.85em;color:#cbd5e1">' + e.desc + '</p>';
+    if (passed) html += '<p style="color:#86efac;font-size:.85em">✅ ' + passed + '</p><button class="sec" onclick="go(\'examen/' + type + '\')">Refaire</button>';
+    else if (ready) html += '<button class="gold" onclick="go(\'examen/' + type + '\')">Passer</button>';
+    else html += '<p style="color:#fbbf24;font-size:.82em">🔒 Défis ' + e.req.join(', ') + '</p>';
+    html += '</div>';
+  }
+  html += '</div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function renderExamen(type) {
+  var u = user(); if (!u) return;
+  var e = EXAMENS[type]; if (!e) { go('examens'); return; }
+  var ready = true;
+  for (var j = 0; j < e.req.length; j++) { if (!u.done['10_' + e.req[j]]) { ready = false; break; } }
+  if (!ready) { alert('Valide les défis requis.'); go('examens'); return; }
+  var html = '<div class="card"><h2>' + e.titre + '</h2><p style="color:#94a3b8;font-size:.85em">' + e.desc + '</p><div class="quiz">';
+  for (var qi = 0; qi < e.qs.length; qi++) {
+    var q = e.qs[qi];
+    html += '<div class="q" data-i="' + qi + '"><p>Q' + (qi + 1) + '. ' + q.q + '</p>';
+    for (var oi = 0; oi < q.o.length; oi++) {
+      html += '<label><input type="radio" name="ex' + qi + '" value="' + oi + '"> ' + q.o[oi] + '</label>';
+    }
+    html += '<div class="exp" id="exexp' + qi + '">' + q.e + '</div></div>';
+  }
+  html += '<button onclick="validerExamen(\'' + type + '\')">Soumettre</button><div id="er"></div></div></div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function validerExamen(type) {
+  var u = user(); if (!u) return;
+  var e = EXAMENS[type]; if (!e) return;
+  var correct = 0;
+  for (var qi = 0; qi < e.qs.length; qi++) {
+    var q = e.qs[qi];
+    var sel = document.querySelector('input[name="ex' + qi + '"]:checked');
+    var labels = document.querySelectorAll('.q[data-i="' + qi + '"] label');
+    for (var li = 0; li < labels.length; li++) { labels[li].classList.remove('ok','ko'); }
+    var ex = document.getElementById('exexp' + qi); if (ex) ex.style.display = 'block';
+    if (sel && parseInt(sel.value) === q.c) { correct++; labels[q.c].classList.add('ok'); }
+    else { labels[q.c].classList.add('ok'); if (sel) labels[parseInt(sel.value)].classList.add('ko'); }
+  }
+  var pct = Math.round(correct / e.qs.length * 100);
+  var req = type === 'final' ? 80 : 60;
+  var pass = pct >= req;
+  if (pass) { u.examens['10_' + type] = today(); save(); }
+  var r = document.getElementById('er');
+  r.className = 'res ' + (pass ? 'g' : 'r');
+  r.textContent = pass ? '🎉 ' + correct + '/' + e.qs.length + ' (' + pct + '%)' : correct + '/' + e.qs.length + ' (' + pct + '%) — Il faut ' + req + '%';
+}
+
+function b64(s) { try { return btoa(unescape(encodeURIComponent(s))); } catch(e) { return ''; } }
+function unb64(b) { try { return decodeURIComponent(escape(atob(b.replace(/\s/g,'')))); } catch(e) { return null; } }
+function exportCode() { return b64(JSON.stringify(state)); }
+function importCode(c) { var j = unb64(c.trim()); if (!j) return false; try { var d = JSON.parse(j); if (!d) return false; state = Object.assign({}, state, d); save(); return true; } catch(e) { return false; } }
+function dlBackup() { var b = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'}); var url = URL.createObjectURL(b); var a = document.createElement('a'); a.href = url; a.download = 'mdpc-n10-' + today() + '.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+function readFile(input) { var f = input.files[0]; if (!f) return; var r = new FileReader(); r.onload = function(e) { try { var d = JSON.parse(e.target.result); state = Object.assign({}, state, d); save(); alert('Restauré !'); route(); } catch(err) { alert('Invalide'); } }; r.readAsText(f); }
+
+function renderSync() {
+  var code = exportCode();
+  var html = '<div class="card"><h2>🌐 Sync</h2></div>';
+  html += '<div class="card"><h3>📋 Code</h3><div class="sync-box"><label>Ton code</label><textarea id="so" readonly onclick="this.select()">' + code + '</textarea><div style="margin-top:8px"><button onclick="copyCode()">Copier</button></div></div>';
+  html += '<div class="sync-box"><label>Coller un code</label><textarea id="si" placeholder="Colle ici..."></textarea><div style="margin-top:8px"><button onclick="applyCode()">Restaurer</button></div></div></div>';
+  html += '<div class="card"><h3>💾 Fichier</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="dlBackup()">Télécharger</button><input type="file" id="bf" accept=".json" style="display:none" onchange="readFile(this)"><button class="sec" onclick="document.getElementById(\'bf\').click()">Importer</button></div></div>';
+  document.getElementById('app').innerHTML = html;
+}
+function copyCode() { var ta = document.getElementById('so'); ta.select(); try { document.execCommand('copy'); alert('Copié !'); } catch(e) { alert('Manuel'); } }
+function applyCode() { var c = document.getElementById('si').value; if (!c.trim()) { alert('Colle un code.'); return; } if (importCode(c)) { alert('Restauré !'); route(); } else alert('Code invalide.'); }
+
+function route() {
+  try {
+    header();
+    if (!state.currentUser) { renderLogin(); return; }
+    if (!isUnlocked(10)) { renderLocked(); return; }
+    var h = (location.hash || '#home').slice(1);
+    var p = h.split('/');
+    if (p[0] === 'home' || p[0] === '') return renderHome();
+    if (p[0] === 'defi' && p[1]) return renderDefi(parseInt(p[1]));
+    if (p[0] === 'certif') return renderCertif();
+    if (p[0] === 'cv') return renderCV();
+    if (p[0] === 'stats') return renderStats();
+    if (p[0] === 'jobs') return renderJobs();
+    if (p[0] === 'examens') return renderExamens();
+    if (p[0] === 'examen' && p[1]) return renderExamen(p[1]);
+    if (p[0] === 'certs') return renderCerts();
+    if (p[0] === 'sync') return renderSync();
+    renderHome();
+  } catch(e) {
+    console.error('Route error:', e);
+    document.getElementById('app').innerHTML = '<div class="card"><h2 style="color:#ef4444">Erreur</h2><p style="color:#ef4444">' + e.message + '</p><pre style="color:#fca5a5;font-size:.8em;white-space:pre-wrap">' + (e.stack || '') + '</pre></div>';
+  }
+}
+window.addEventListener('hashchange', route);
+try { route(); } catch(e) {
+  document.getElementById('app').innerHTML = '<div class="card"><h2 style="color:#ef4444">Erreur init</h2><p style="color:#ef4444">' + e.message + '</p></div>';
+}
+</script>
+</body>
+</html>
